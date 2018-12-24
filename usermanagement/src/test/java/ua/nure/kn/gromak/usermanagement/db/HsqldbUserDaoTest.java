@@ -13,6 +13,8 @@ import java.util.Date;
 public class HsqldbUserDaoTest extends DatabaseTestCase{
 
     private static final Long TEST_ID = 1000L;
+    private static final String TEST_LAST_NAME = "Gromak";
+    private static final String TEST_FIRST_NAME = "Alexandra";
     private HsqldbUserDao dao;
     private ConnectionFactory connectionFactory;
 
@@ -24,8 +26,8 @@ public class HsqldbUserDaoTest extends DatabaseTestCase{
     public void testCreate() {
         try {
             User user = new User();
-            user.setFirstName("Alexandra");
-            user.setLastName("Gromak");
+            user.setFirstName(TEST_FIRST_NAME);
+            user.setLastName(TEST_LAST_NAME);
             user.setDateOfBirth(new Date());
             assertNull(user.getId());
             user = dao.create(user);
@@ -41,7 +43,7 @@ public class HsqldbUserDaoTest extends DatabaseTestCase{
     public void testUpdateUser() throws DatabaseException {
         User user = dao.find(TEST_ID);
         assertNotNull(user);
-        user.setFirstName("Alexandra");
+        user.setFirstName(TEST_FIRST_NAME);
         dao.update(user);
         User updatedUser = dao.find(TEST_ID);
         assertEquals(user.getFirstName(), updatedUser.getFirstName());

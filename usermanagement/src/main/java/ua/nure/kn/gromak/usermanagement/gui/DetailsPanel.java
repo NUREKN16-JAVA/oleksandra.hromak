@@ -1,6 +1,7 @@
 package ua.nure.kn.gromak.usermanagement.gui;
 
 import ua.nure.kn.gromak.usermanagement.User;
+import ua.nure.kn.gromak.usermanagement.db.DatabaseException;
 import ua.nure.kn.gromak.usermanagement.util.Messages;
 
 import javax.swing.*;
@@ -17,11 +18,12 @@ public class DetailsPanel extends JPanel implements ActionListener {
     private JPanel buttonPanel;
     private JPanel fieldPanel;
     private JButton okayButton;
+    private JButton cancelButton;
     private JTextField firstNameField;
     private JTextField lastNameField;
     private JTextField dateOfBirthField;
-    private JTextField idField;
     private Color backgrColor = Color.WHITE;
+    private static final String TITLE_ERROR = "Error";
 
     public DetailsPanel(MainFrame mainFrame) {
         parentFrame = mainFrame;
@@ -57,6 +59,18 @@ public class DetailsPanel extends JPanel implements ActionListener {
         return okayButton;
     }
 
+    private JButton getCancelButton() {
+        if (cancelButton == null) {
+            cancelButton = new JButton();
+            cancelButton.setText(Messages.getString("AddPanel.cancel"));
+            cancelButton.setName("cancelButton");
+            cancelButton.setActionCommand("cancel");
+            cancelButton.addActionListener(this);
+        }
+        return cancelButton;
+    }
+
+
     private JTextField getFirstNameField() {
         if (firstNameField == null) {
             firstNameField = new JTextField();
@@ -82,15 +96,6 @@ public class DetailsPanel extends JPanel implements ActionListener {
             dateOfBirthField.setText(dateOfBirth);
         }
         return dateOfBirthField;
-    }
-
-    private JTextField getIdField() {
-        if (idField == null) {
-            idField = new JTextField();
-            idField.setName("idField"); //$NON-NLS-1$
-            idField.setText(String.valueOf(user.getId()));
-        }
-        return idField;
     }
 
     protected JPanel getFieldPanel() {
@@ -127,5 +132,18 @@ public class DetailsPanel extends JPanel implements ActionListener {
         label.setLabelFor(textField);
         panel.add(label);
         panel.add(textField);
+    }
+
+    public void showUser(Long id){
+        try {
+            User user = parentFrame.getDao().find(id);
+            getFirstNameField().setText(user.getFirstName());
+            getLastNameField().setText(user.getLastName());
+            getDateOfBirthField().setText(DateFormat.getDateInstance().format(user.getDateOfBirth()));
+        } catch (DatabaseException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), TITLE_ERROR, JOptionPane.ERROR_MESSAGE);
+            this.setVisible(false);
+            parentFrame.showBrowsePanel();
+        }
     }
 }

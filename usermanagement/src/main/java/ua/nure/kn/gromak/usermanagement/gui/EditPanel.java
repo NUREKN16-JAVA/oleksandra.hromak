@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 public class EditPanel extends JPanel implements ActionListener {
@@ -22,6 +23,7 @@ public class EditPanel extends JPanel implements ActionListener {
     private JTextField dateOfBirthField;
     private Color backgrColor;
     private User user;
+    private Long buffId;
     private static final String TITLE_ERROR = "Error";
 
 
@@ -147,4 +149,17 @@ public class EditPanel extends JPanel implements ActionListener {
         panel.add(textField);
     }
 
+    void showUser(Long id) {
+        try {
+            buffId = id;
+            User user = parentFrame.getDao().find(id);
+            getFirstNameField().setText(user.getFirstName());
+            getLastNameField().setText(user.getLastName());
+            getDateOfBirthField().setText(DateFormat.getDateInstance().format(user.getDateOfBirth()));
+        } catch (DatabaseException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), TITLE_ERROR, JOptionPane.ERROR_MESSAGE);
+            this.setVisible(false);
+            parentFrame.showBrowsePanel();
+        }
+    }
 }

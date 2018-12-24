@@ -17,5 +17,3 @@ bin*
 .settings*
 .classpath
 .project
-.idea
-/out/

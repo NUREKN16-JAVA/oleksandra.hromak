@@ -6,7 +6,8 @@ import java.util.Properties;
 public class DaoFactory {
     private final static DaoFactory INSTANCE = new DaoFactory();
     private static final String USER_DAO_IMPL = "ua.nure.kn.gromak.usermanagement.db.UserDao";
-    private final Properties properties;
+    private static Properties properties;
+    private static DaoFactory instance;
 
     public ConnectionFactory getConnectionFactory() {
         String driver = properties.getProperty("connection.driver");
@@ -26,6 +27,12 @@ public class DaoFactory {
         }
     }
 
+    public static void init(Properties prop) {
+        properties = prop;
+        instance = null;
+    }
+
+
     public UserDao getUserDao() {
         UserDao userDao = null;
 
@@ -38,6 +45,8 @@ public class DaoFactory {
             userDao.setConnectionFactory(getConnectionFactory());
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
             throw new RuntimeException("Cannot load the DAO implementation class!", e);
+        } catch (DatabaseException e) {
+            e.printStackTrace();
         }
 
         return userDao;

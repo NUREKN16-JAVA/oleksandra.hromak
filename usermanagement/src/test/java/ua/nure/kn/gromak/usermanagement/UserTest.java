@@ -5,8 +5,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Calendar;
+import java.util.Date;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class UserTest {
     private User user;
@@ -44,7 +45,7 @@ public class UserTest {
 
     @Before
     public void setUp() throws Exception {
-        user = new User();
+        user = new User(1L, "Alexandra", "Gromak", new Date(99, 8, 13));
     }
 
     @After

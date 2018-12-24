@@ -1,22 +1,16 @@
 package ua.nure.kn.gromak.usermanagement.gui;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.util.Date;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-
 import ua.nure.kn.gromak.usermanagement.User;
 import ua.nure.kn.gromak.usermanagement.db.DatabaseException;
 import ua.nure.kn.gromak.usermanagement.util.Messages;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class AddPanel extends JPanel implements ActionListener {
     protected MainFrame parent;
@@ -124,28 +118,30 @@ public class AddPanel extends JPanel implements ActionListener {
         panel.add(textField);
     }
 
-    public void actionPerformed(ActionEvent e){
-        if ("okay".equalsIgnoreCase(e.getActionCommand())) {
-            User user = new User(1L, firstName, lastName, now);
+    public void actionPerformed(ActionEvent e) {
+
+        if("okay".equalsIgnoreCase(e.getActionCommand())) {
+            User user = new User();
             user.setFirstName(getFirstNameField().getText());
             user.setLastName(getLastNameField().getText());
-            DateFormat format = DateFormat.getDateInstance();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String date=dateFormat.format(new Date());
             try {
-                Date date = format.parse(getDateOfBirthField().getText());
-                user.setDateOfBirth(date);
+                user.setDateOfBirth(dateFormat.parse(getDateOfBirthField().getText()));
             } catch (ParseException e1) {
                 getDateOfBirthField().setBackground(Color.RED);
                 return;
             }
             try {
-                parent.getDao().create(user );
+                parent.getDao().create(user);
             } catch (DatabaseException e1) {
                 JOptionPane.showMessageDialog(this, e1.getMessage(), TITLE_ERROR, JOptionPane.ERROR_MESSAGE);
             }
         }
         clearFields();
         this.setVisible(false);
-        ((MainFrame) parent).showBrowsePanel();
-    }
+        parent.showBrowsePanel();
 
+
+    }
 }

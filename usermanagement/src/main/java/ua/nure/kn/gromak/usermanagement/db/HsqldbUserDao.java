@@ -62,7 +62,7 @@ class HsqldbUserDao implements UserDao {
     }
 
     @Override
-    public User update(User user) throws DatabaseException {
+    public void update(User user) throws DatabaseException {
         Connection connection = connectionFactory.createConnection();
         try {
             PreparedStatement statement = connection
@@ -87,7 +87,7 @@ class HsqldbUserDao implements UserDao {
 
     @Override
     public User find(Long id) throws DatabaseException {
-        User user = new User();
+        User user = new User(firstName, lastName, now);
         try {
             user = null;
             Connection connection = connectionFactory.createConnection();
@@ -95,7 +95,7 @@ class HsqldbUserDao implements UserDao {
             preparedStatement.setLong(1,id);
             ResultSet oneUserResultSet = preparedStatement.executeQuery();
             if (oneUserResultSet.next()){
-                user = new User();
+                user = new User(firstName, lastName, now);
                 user.setId(new Long(oneUserResultSet.getLong("ID")));
                 user.setFirstName(oneUserResultSet.getString("Name"));
                 user.setLastName(oneUserResultSet.getString("Surname"));
@@ -119,7 +119,7 @@ class HsqldbUserDao implements UserDao {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(SELECT_ALL_QUERY);
             while(resultSet.next()) {
-                User user = new User();
+                User user = new User(firstName, lastName, now);
                 user.setId(new Long(resultSet.getLong(1)));
                 user.setFirstName(resultSet.getString(2));
                 user.setLastName(resultSet.getString(3));

@@ -15,11 +15,11 @@ public interface UserDao {
 
     Collection<User> findAll() throws DatabaseException;
 
-    User update(User user) throws DatabaseException;
+    void update(User user) throws DatabaseException;
 
     User delete(User user) throws DatabaseException;
 
-    void setConnectionFactory(ConnectionFactory connectionFactory);
+    void setConnectionFactory(ConnectionFactory connectionFactory) throws DatabaseException;
 }
 
 

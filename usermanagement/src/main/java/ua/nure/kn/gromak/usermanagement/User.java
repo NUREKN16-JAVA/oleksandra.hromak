@@ -18,6 +18,12 @@ public class User implements Serializable{
         this.dateOfBirth = dateOfBirth;
     }
 
+    public User(String firstName, String lastName, Date now) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dateOfBirth = now;
+    }
+
     public User() {
 
     }

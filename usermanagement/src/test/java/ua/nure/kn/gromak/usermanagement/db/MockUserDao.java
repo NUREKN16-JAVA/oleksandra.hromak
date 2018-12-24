@@ -9,6 +9,7 @@ import java.util.Map;
 public abstract class MockUserDao implements UserDao {
     private long id = 0;
     private Map<Long, User> users = new HashMap<>();
+
     @Override
     public User create(User user) throws DatabaseException {
         Long currentId = new Long(++id);
@@ -35,9 +36,10 @@ public abstract class MockUserDao implements UserDao {
     }
 
     @Override
-    public void delete(User user) throws DatabaseException {
+    public User delete(User user) throws DatabaseException {
         Long currentId = user.getId();
         users.remove(currentId);
+        return user;
     }
 
     @Override

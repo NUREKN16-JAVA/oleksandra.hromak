@@ -1,19 +1,14 @@
 package ua.nure.kn.gromak.usermanagement.gui;
 
-import java.awt.BorderLayout;
+import ua.nure.kn.gromak.usermanagement.User;
+import ua.nure.kn.gromak.usermanagement.db.DatabaseException;
+import ua.nure.kn.gromak.usermanagement.util.Messages;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import javax.swing.JButton;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
-
-import ua.nure.kn.gromak.usermanagement.User;
-import ua.nure.kn.gromak.usermanagement.util.Messages;
-import ua.nure.kn.gromak.usermanagement.db.DatabaseException;
 
 public class BrowsePanel extends JPanel implements ActionListener {
 
@@ -119,7 +114,7 @@ public class BrowsePanel extends JPanel implements ActionListener {
             User user = parent.getDao().find((Long) getUserTable().getValueAt(selectedRow, 0));
             return user;
         } catch (DatabaseException e) {
-            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, e.getMessage(), TITLE_ERROR, JOptionPane.ERROR_MESSAGE);
         }
         return null;
     }
