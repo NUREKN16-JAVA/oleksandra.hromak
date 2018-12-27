@@ -20,6 +20,8 @@ public interface UserDao {
     User delete(User user) throws DatabaseException;
 
     void setConnectionFactory(ConnectionFactory connectionFactory) throws DatabaseException;
+
+    Collection find(String firstName, String lastName) throws DatabaseException;
 }
 
 
